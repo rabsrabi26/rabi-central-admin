@@ -1,0 +1,15 @@
+
+Options -Indexes
+
+RewriteEngine On
+
+# GitHub OAuth callback
+RewriteRule ^callback/?$ index.php?route=callback [QSA,L]
+
+# Start GitHub login
+RewriteRule ^login/?$ index.php?route=login [QSA,L]
+
+# Protect sensitive files
+<FilesMatch "^(config\.php|\.env|composer\.(json|lock))$">
+    Require all denied
+</FilesMatch>

@@ -1,0 +1,7 @@
+/private/
+config.php
+.env
+.env.*
+*.sql
+*.zip
+*.log
