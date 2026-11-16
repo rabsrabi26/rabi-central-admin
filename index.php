@@ -246,66 +246,65 @@ if (!empty($_SESSION['authenticated'])) {
                 font-weight: bold;
             }
         </style>
+        <link rel="stylesheet" href="/admin.css">
     </head>
 
     <body>
-
-        <header>
-            <h1>Rabi Central Admin</h1>
+    <header class="admin-header">
+        <div class="admin-container admin-topbar">
+            <div class="admin-brand">RABI / CENTRAL ADMIN</div>
             <a href="?route=logout">Sign out</a>
-        </header>
+        </div>
+    </header>
 
-        <main>
-
-            <section class="welcome">
-                <h2>Welcome, <?= $name ?></h2>
-                <p>Signed in as <?= $login ?></p>
-                <p class="status">● Authentication successful</p>
+    <main class="admin-main">
+        <div class="admin-container">
+            <section class="admin-panel admin-dashboard">
+                <h1>Welcome, <?= htmlspecialchars($name, ENT_QUOTES, 'UTF-8') ?></h1>
+                <p>Signed in as <?= htmlspecialchars($login, ENT_QUOTES, 'UTF-8') ?></p>
+                <p class="admin-status">● Authentication successful</p>
             </section>
 
-            <section class="grid">
-
-                <div class="card">
-                    <h3>Portfolio Management</h3>
+            <section class="admin-grid">
+                <div class="admin-card">
+                    <h2>Portfolio Management</h2>
                     <p>Manage your personal portfolio website.</p>
-                    <p>Coming soon</p>
+                    <span class="admin-status">Coming soon</span>
                 </div>
 
-                <div class="card">
-                    <h3>Blog Management</h3>
+                <div class="admin-card">
+                    <h2>Blog Management</h2>
                     <p>Manage your RabiNotes blog content.</p>
-                    <p>Coming soon</p>
+                    <span class="admin-status">Coming soon</span>
                 </div>
 
-                <div class="card">
-                    <h3>Projects & Research</h3>
+                <div class="admin-card">
+                    <h2>Projects &amp; Research</h2>
                     <p>Manage projects, publications and research.</p>
-                    <p>Coming soon</p>
+                    <span class="admin-status">Coming soon</span>
                 </div>
 
-                <div class="card">
-                    <h3>Education & Experience</h3>
+                <div class="admin-card">
+                    <h2>Education &amp; Experience</h2>
                     <p>Manage your academic and professional history.</p>
-                    <p>Coming soon</p>
+                    <span class="admin-status">Coming soon</span>
                 </div>
 
-                <div class="card">
-                    <h3>Certifications</h3>
+                <div class="admin-card">
+                    <h2>Certifications</h2>
                     <p>Manage your certificates and achievements.</p>
-                    <p>Coming soon</p>
+                    <span class="admin-status">Coming soon</span>
                 </div>
 
-                <div class="card">
-                    <h3>System Settings</h3>
+                <div class="admin-card">
+                    <h2>System Settings</h2>
                     <p>Central administration settings.</p>
-                    <p>Coming soon</p>
+                    <span class="admin-status">Coming soon</span>
                 </div>
-
             </section>
-
-        </main>
-
-    </body>
+        </div>
+    </main>
+</body>
     </html>
     <?php
 
@@ -319,10 +318,27 @@ if (!empty($_SESSION['authenticated'])) {
 <head>
     <meta charset="UTF-8">
     <title>Rabi Central Admin</title>
+    <link rel="stylesheet" href="/admin.css">
 </head>
 <body>
-    <h1>Rabi Central Admin</h1>
-    <p>Sign in with your authorized GitHub account.</p>
-    <a href="/login">Continue with GitHub</a>
+    <header class="admin-header">
+        <div class="admin-container">
+            <div class="admin-brand">RABI / CENTRAL ADMIN</div>
+        </div>
+    </header>
+
+    <main class="admin-main">
+        <div class="admin-container">
+            <section class="admin-panel">
+                <h1>Rabi Central Admin</h1>
+                <p>One central place to manage your digital platforms.</p>
+                <p class="admin-muted">Sign in with your authorized GitHub account to continue.</p>
+
+                <a class="admin-button" href="/login">
+                    Continue with GitHub
+                </a>
+            </section>
+        </div>
+    </main>
 </body>
 </html>
