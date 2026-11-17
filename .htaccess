@@ -13,3 +13,12 @@ RewriteRule ^login/?$ index.php?route=login [QSA,L]
 <FilesMatch "^(config\.php|\.env|composer\.(json|lock))$">
     Require all denied
 </FilesMatch>
+
+# Security headers (same set as rabsrabi.com) and keep the admin out of search results
+<IfModule mod_headers.c>
+    Header always set X-Content-Type-Options "nosniff"
+    Header always set X-Frame-Options "SAMEORIGIN"
+    Header always set Referrer-Policy "strict-origin-when-cross-origin"
+    Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+    Header always set X-Robots-Tag "noindex, nofollow"
+</IfModule>
