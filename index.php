@@ -173,90 +173,23 @@ if (!empty($_SESSION['authenticated'])) {
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>Rabi Central Admin</title>
-
-        <style>
-            * {
-                box-sizing: border-box;
-            }
-
-            body {
-                margin: 0;
-                font-family: Arial, sans-serif;
-                background: #f4f6fa;
-                color: #202938;
-            }
-
-            header {
-                background: #172033;
-                color: white;
-                padding: 22px 35px;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-            }
-
-            header h1 {
-                margin: 0;
-                font-size: 22px;
-            }
-
-            header a {
-                color: white;
-                text-decoration: none;
-            }
-
-            main {
-                max-width: 1100px;
-                margin: 45px auto;
-                padding: 0 22px;
-            }
-
-            .welcome {
-                margin-bottom: 35px;
-            }
-
-            .welcome h2 {
-                margin-bottom: 8px;
-            }
-
-            .grid {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-                gap: 20px;
-            }
-
-            .card {
-                background: white;
-                padding: 25px;
-                border-radius: 12px;
-                border: 1px solid #e5e7eb;
-            }
-
-            .card h3 {
-                margin-top: 0;
-            }
-
-            .card p {
-                color: #64748b;
-                line-height: 1.5;
-            }
-
-            .status {
-                color: #16803c;
-                font-weight: bold;
-            }
-        </style>
         <link rel="stylesheet" href="/admin.css">
     </head>
-
     <body>
-    <header class="admin-header">
-        <div class="admin-container admin-topbar">
-            <div class="admin-brand">RABI / CENTRAL ADMIN</div>
+<header class="admin-header">
+    <div class="admin-container admin-topbar">
+        <div class="admin-brand">RABI / CENTRAL ADMIN</div>
+
+        <div class="admin-topbar-actions">
+            <div class="admin-theme" role="group" aria-label="Theme selection">
+                <button type="button" data-theme-choice="system" aria-pressed="true">System</button>
+                <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+                <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+            </div>
             <a href="?route=logout">Sign out</a>
         </div>
-    </header>
-
+    </div>
+</header>
     <main class="admin-main">
         <div class="admin-container">
             <section class="admin-panel admin-dashboard">
@@ -304,6 +237,64 @@ if (!empty($_SESSION['authenticated'])) {
             </section>
         </div>
     </main>
+
+<script>
+(function () {
+    const root = document.documentElement;
+    const buttons = document.querySelectorAll('[data-theme-choice]');
+    const storageKey = 'rabi-admin-theme';
+
+    function getPreference() {
+        try {
+            return localStorage.getItem(storageKey) || 'system';
+        } catch (error) {
+            return 'system';
+        }
+    }
+
+    function applyTheme(preference) {
+        const valid = ['system', 'light', 'dark'];
+        if (!valid.includes(preference)) preference = 'system';
+
+        if (preference === 'system') {
+            root.removeAttribute('data-theme');
+        } else {
+            root.setAttribute('data-theme', preference);
+        }
+
+        buttons.forEach(function (button) {
+            button.setAttribute(
+                'aria-pressed',
+                String(button.dataset.themeChoice === preference)
+            );
+        });
+    }
+
+    buttons.forEach(function (button) {
+        button.addEventListener('click', function () {
+            const preference = button.dataset.themeChoice;
+
+            try {
+                localStorage.setItem(storageKey, preference);
+            } catch (error) {
+                // Theme still works for this page if storage is unavailable.
+            }
+
+            applyTheme(preference);
+        });
+    });
+
+    applyTheme(getPreference());
+
+    const systemPreference = window.matchMedia('(prefers-color-scheme: dark)');
+
+    systemPreference.addEventListener('change', function () {
+        if (getPreference() === 'system') {
+            applyTheme('system');
+        }
+    });
+})();
+</script>
 </body>
     </html>
     <?php
