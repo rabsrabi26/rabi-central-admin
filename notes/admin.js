@@ -432,16 +432,30 @@
 
 async function start() {
   try {
+    $("login-screen").hidden = false;
+    $("app-screen").hidden = true;
+    $("logout").hidden = true;
+
     await loadPosts();
+
     showApp();
 
     if (LOCAL_MODE) {
-      $("save-status").textContent = "Local test mode: changes stay in this browser and are not sent to GitHub.";
+      $("save-status").textContent =
+        "Local test mode: changes stay in this browser and are not sent to GitHub.";
+
       $("save-post").textContent = "Save locally";
-      notice("Local test mode is active. You can create, edit, preview and delete test posts safely. Nothing is published online.", "success");
+
+      notice(
+        "Local test mode is active. You can create, edit, preview and delete test posts safely. Nothing is published online.",
+        "success"
+      );
     }
   } catch (error) {
-    showApp();
+    $("login-screen").hidden = false;
+    $("app-screen").hidden = true;
+    $("logout").hidden = true;
+
     notice(error.message, "error");
   }
 }

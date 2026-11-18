@@ -38,13 +38,12 @@
     </div>
   </header>
   <main class="shell" id="main">
-    <section id="login-screen" class="login-card">
-      <div class="eyebrow">Private workspace</div>
-      <h1>Your writing, in one place.</h1>
-      <p>Sign in with the authorized GitHub account to manage the notes on rabsrabi notes.</p>
-      <a class="btn primary" href="https://rabinotes-auth.rabsrabi26.workers.dev/auth/login">Continue with GitHub</a>
-      <p class="hint">Only the configured GitHub account can access this dashboard.</p>
-    </section>
+<section id="login-screen" class="login-card" hidden>
+  <div class="eyebrow">Private workspace</div>
+  <h1>Connecting to your workspace...</h1>
+  <p>Please wait while your authenticated session is verified.</p>
+</section>
+
 
     <section id="app-screen" hidden>
       <div class="page-heading">
