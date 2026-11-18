@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="theme-color" content="#F3F6FA" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#080D17" media="(prefers-color-scheme: dark)">
+  <title>Editor · rabsrabi notes</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;600;700;800&family=Instrument+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap">
+  <link rel="stylesheet" href="/assets/brand/brand.css">
+  <link rel="stylesheet" href="/notes/admin.css">
+  <script src="/assets/brand/brand.js"></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-head">
+    <div class="wrap head-in">
+      <a class="lockup" href="/" aria-label="rabsrabi notes, home">
+        <svg class="mark" aria-hidden="true"><use href="#rs-mark"/></svg>
+        <span class="wm">rabs<i>rabi</i></span>
+        <span class="sub">/ notes editor</span>
+      </a>
+      <div class="head-end">
+        <a class="hide-sm" href="/" target="_blank" rel="noreferrer" style="font-size:13px">View blog &nearr;</a>
+        <div class="seg" role="group" aria-label="Theme">
+          <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
+          <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+          <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+        </div>
+        <button id="logout" class="btn quiet" style="min-height:36px" hidden>Sign out</button>
+      </div>
+    </div>
+  </header>
+  <main class="shell" id="main">
+    <section id="login-screen" class="login-card">
+      <div class="eyebrow">Private workspace</div>
+      <h1>Your writing, in one place.</h1>
+      <p>Sign in with the authorized GitHub account to manage the notes on rabsrabi notes.</p>
+      <a class="btn primary" href="https://rabinotes-auth.rabsrabi26.workers.dev/auth/login">Continue with GitHub</a>
+      <p class="hint">Only the configured GitHub account can access this dashboard.</p>
+    </section>
+
+    <section id="app-screen" hidden>
+      <div class="page-heading">
+        <div><div class="eyebrow">Content management</div><h1>Posts</h1><p class="subheading">Create, edit and publish notes on rabsrabi notes.</p></div>
+        <button id="new-post" class="btn primary">＋ New post</button>
+      </div>
+      <div id="notice" class="notice" role="status" hidden></div>
+      <div class="workspace">
+        <aside class="post-list-panel">
+          <div class="list-heading"><strong>All posts</strong><span id="post-count">0</span></div>
+          <div id="post-list" class="post-list"></div>
+        </aside>
+        <section class="editor-panel">
+          <div id="empty-editor" class="empty-editor"><div class="empty-icon">✎</div><h2>Select a post</h2><p>Choose a post from the list or create a new one.</p></div>
+          <form id="post-form" hidden>
+            <div class="editor-heading"><div><div class="eyebrow" id="editor-mode">EDIT POST</div><h2 id="form-heading">Edit post</h2></div><button type="button" id="delete-post" class="btn danger quiet">Delete</button></div>
+            <label>Post title<input id="title" required maxlength="160" placeholder="A clear, useful title"></label>
+            <div class="two-col">
+              <label>URL slug<input id="slug" required pattern="[a-z0-9]+(?:-[a-z0-9]+)*" placeholder="my-new-post"></label>
+              <label>Category<input id="category" list="category-options" value="Notes" placeholder="Choose or type a category"><datalist id="category-options"><option value="Networking"></option><option value="Wireless"></option><option value="Research"></option><option value="Notes"></option></datalist></label>
+            </div>
+            <div class="two-col">
+              <label>Tags<input id="tags" placeholder="MIMO, 5G, MATLAB, Tutorial"><span class="hint">Separate multiple tags with commas.</span></label>
+              <label>Publication date<input id="date" type="date" required></label>
+              <label>Reading time<input id="read" maxlength="30" placeholder="4 min read"></label>
+            </div>
+            <label>Short description<textarea id="description" rows="2" maxlength="240" placeholder="A short summary shown on the homepage"></textarea></label>
+            <div class="body-label"><label for="rich-editor">Post body <span>Rich text editor — no HTML needed</span></label><button type="button" id="preview-toggle" class="text-button">Preview</button></div>
+            <div class="editor-toolbar" role="toolbar" aria-label="Text formatting">
+              <button type="button" data-command="bold" title="Bold"><strong>B</strong></button>
+              <button type="button" data-command="italic" title="Italic"><em>I</em></button>
+              <button type="button" data-command="underline" title="Underline"><u>U</u></button>
+              <span class="toolbar-divider"></span>
+              <button type="button" data-block="h2" title="Heading">H2</button>
+              <button type="button" data-block="h3" title="Subheading">H3</button>
+              <button type="button" data-block="p" title="Paragraph">¶</button>
+              <span class="toolbar-divider"></span>
+              <button type="button" data-command="insertUnorderedList" title="Bullet list">• List</button>
+              <button type="button" data-command="insertOrderedList" title="Numbered list">1. List</button>
+              <button type="button" data-command="formatBlock" data-value="blockquote" title="Quote">❝ Quote</button>
+              <button type="button" data-command="formatBlock" data-value="pre" title="Code block">&lt;/&gt;</button>
+              <span class="toolbar-divider"></span>
+              <button type="button" id="insert-link" title="Insert link">Link</button>
+              <span class="toolbar-divider"></span>
+              <button type="button" id="upload-image" title="Upload an image from your computer">Upload image</button>
+              <button type="button" id="insert-image-url" title="Insert an image from a URL">Image URL</button>
+              <span class="toolbar-divider"></span>
+              <button type="button" id="replace-image-upload" title="Replace the selected image with an uploaded image" disabled>Replace image</button>
+              <button type="button" id="edit-image-url" title="Change the selected image URL" disabled>Change image URL</button>
+              <button type="button" id="remove-image" title="Remove the selected image" disabled>Remove image</button>
+              <button type="button" data-command="removeFormat" title="Clear formatting">Clear</button>
+            </div>
+            <div id="rich-editor" class="rich-editor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Post content" data-placeholder="Start writing your article here..."></div>
+            <textarea id="body" hidden></textarea>
+            <input id="image-file" type="file" accept="image/*" hidden>
+            <p class="hint image-help">Local testing: uploads are saved in this browser (max 1 MB per image). Image URLs can be used in either mode.</p>
+            <div id="preview" class="preview" hidden></div>
+            <div class="save-row"><span id="save-status" class="hint">Changes are saved to GitHub when you publish.</span><button type="submit" id="save-post" class="btn primary">Publish changes</button></div>
+          </form>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="/notes/admin.js"></script>
+</body>
+</html>

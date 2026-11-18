@@ -36,6 +36,122 @@ if (($_GET['route'] ?? '') === 'logout') {
     header('Location: ' . APP_URL . '/');
     exit;
 }
+
+// ---------------------------------------------------------------------------
+// RabiNotes API — uses the existing central GitHub session
+// ---------------------------------------------------------------------------
+
+if (($_GET['route'] ?? '') === 'notes-api') {
+    header('Content-Type: application/json; charset=utf-8');
+
+    if (
+        empty($_SESSION['authenticated']) ||
+        empty($_SESSION['github_token'])
+    ) {
+        http_response_code(401);
+        echo json_encode(['error' => 'Please sign in again.']);
+        exit;
+    }
+
+    $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+
+    if (!in_array($method, ['GET', 'PUT'], true)) {
+        http_response_code(405);
+        echo json_encode(['error' => 'Method not allowed.']);
+        exit;
+    }
+
+    $githubUrl = 'https://api.github.com/repos/rabsrabi26/rabinotes/contents/assets/posts.js';
+
+    $headers = [
+        'Accept: application/vnd.github+json',
+        'Authorization: Bearer ' . $_SESSION['github_token'],
+        'X-GitHub-Api-Version: 2022-11-28',
+        'User-Agent: Rabi-Central-Admin'
+    ];
+
+    $payload = null;
+
+    if ($method === 'PUT') {
+        $input = json_decode(file_get_contents('php://input'), true);
+
+        if (
+            !is_array($input) ||
+            !isset($input['content'], $input['sha']) ||
+            !is_string($input['content']) ||
+            !is_string($input['sha'])
+        ) {
+            http_response_code(400);
+            echo json_encode(['error' => 'Invalid post data.']);
+            exit;
+        }
+
+        $payload = json_encode([
+            'message' => 'Update RabiNotes posts via Central Admin',
+            'content' => base64_encode($input['content']),
+            'sha' => $input['sha'],
+            'branch' => 'main'
+        ]);
+    }
+
+    $ch = curl_init($githubUrl);
+
+    $options = [
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_HTTPHEADER => $headers,
+        CURLOPT_TIMEOUT => 30
+    ];
+
+    if ($method === 'PUT') {
+        $options[CURLOPT_CUSTOMREQUEST] = 'PUT';
+        $options[CURLOPT_POSTFIELDS] = $payload;
+        $options[CURLOPT_HTTPHEADER][] = 'Content-Type: application/json';
+    }
+
+    curl_setopt_array($ch, $options);
+
+    $response = curl_exec($ch);
+    $status = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    $curlError = curl_error($ch);
+    curl_close($ch);
+
+    if ($response === false) {
+        error_log('RabiNotes GitHub API: ' . $curlError);
+        http_response_code(502);
+        echo json_encode(['error' => 'Could not connect to GitHub.']);
+        exit;
+    }
+
+    $result = json_decode($response, true);
+
+    if ($status < 200 || $status >= 300 || !is_array($result)) {
+        error_log('RabiNotes GitHub API error: HTTP ' . $status . ' ' . $response);
+        http_response_code($status >= 400 && $status < 600 ? $status : 502);
+        echo json_encode(['error' => 'GitHub could not complete the request. Check repository access and try again.']);
+        exit;
+    }
+
+    if ($method === 'GET') {
+        $content = base64_decode($result['content'] ?? '', true);
+
+        if ($content === false || empty($result['sha'])) {
+            http_response_code(502);
+            echo json_encode(['error' => 'Could not read the posts file from GitHub.']);
+            exit;
+        }
+
+        echo json_encode([
+            'content' => $content,
+            'sha' => $result['sha']
+        ]);
+    } else {
+        echo json_encode([
+            'sha' => $result['content']['sha'] ?? ''
+        ]);
+    }
+
+    exit;
+}
 if (($_GET['route'] ?? '') === 'login') {
 
     $state = bin2hex(random_bytes(32));
@@ -268,6 +384,11 @@ function render_message(string $title, string $heading, string $text, ?string $b
 // ---------------------------------------------------------------------------
 
 if (!empty($_SESSION['authenticated'])) {
+    // Load Notes editor inside the central admin
+    if (($_GET['route'] ?? '') === 'notes') {
+        require __DIR__ . '/notes/editor.php';
+        exit;
+    }
     $name  = $_SESSION['github_name'] ?? 'Administrator';
     $login = $_SESSION['github_login'] ?? '';
 
