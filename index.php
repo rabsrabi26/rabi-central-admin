@@ -199,7 +199,7 @@ function render_header(bool $signedIn): void
 <?php if ($signedIn): ?>
             <nav class="head-nav" aria-label="Main navigation">
                 <a href="/" aria-current="page">Dashboard</a>
-                <a href="https://blog.rabsrabi.com/admin/">Notes editor</a>
+                <a href="?route=notes">Notes editor</a>
             </nav>
 <?php endif; ?>
             <div class="head-end">
@@ -285,7 +285,7 @@ if (!empty($_SESSION['authenticated'])) {
         </section>
 
         <section class="grid dash-grid" aria-label="Sites and tools">
-            <a class="card" href="https://blog.rabsrabi.com/admin/">
+            <a class="card" href="?route=notes">
                 <div class="top"><span class="tag">Live</span><span>blog.rabsrabi.com</span></div>
                 <h4>Notes editor</h4>
                 <p>Write, edit and publish posts on rabsrabi notes.</p>
@@ -327,7 +327,7 @@ if (!empty($_SESSION['authenticated'])) {
     if (window.RabsBrand) {
         RabsBrand.palette.setItems([
             { group: 'Admin', label: 'Dashboard', hint: '/', href: '/' },
-            { group: 'Admin', label: 'Notes editor', hint: 'blog.rabsrabi.com', href: 'https://blog.rabsrabi.com/admin/' },
+            { group: 'Admin', label: 'Notes editor', hint: 'blog.rabsrabi.com', href: '?route=notes' },
             { group: 'Admin', label: 'Sign out', hint: '', href: '?route=logout' }
         ]);
     }
