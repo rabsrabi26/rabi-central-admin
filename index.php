@@ -45,7 +45,7 @@ if (($_GET['route'] ?? '') === 'login') {
     $params = [
         'client_id' => GITHUB_CLIENT_ID,
         'redirect_uri' => APP_URL . '/callback',
-        'scope' => 'read:user',
+        'scope' => 'read:user public_repo',
         'state' => $state
     ];
 
