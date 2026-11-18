@@ -135,6 +135,7 @@ if (($_GET['route'] ?? '') === 'callback') {
 
         session_regenerate_id(true);
 
+        $_SESSION['github_token'] = $tokenData['access_token'];
         $_SESSION['authenticated'] = true;
         $_SESSION['github_login'] = $user['login'];
         $_SESSION['github_name'] = $user['name'] ?? $user['login'];
