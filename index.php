@@ -360,7 +360,7 @@ function render_message(string $title, string $heading, string $text, ?string $b
     render_head($title);
     render_header(false);
     ?>
-    <main id="main" class="wrap">
+    <main id="main" class="wrap auth-page">
         <section class="panel">
             <div class="eyebrow">Private workspace</div>
             <h1><?= e($heading) ?></h1>

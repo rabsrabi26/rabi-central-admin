@@ -24,3 +24,46 @@ a.card:focus-visible { outline-offset: 3px; border-radius: var(--r-md); }
 body { min-height: 100vh; min-height: 100dvh; display: flex; flex-direction: column; }
 body > main { flex: 1 0 auto; width: 100%; }
 body > .site-foot { flex: none; }
+/* Pre-login / authentication page */
+.auth-page {
+    min-height: calc(100vh - 74px);
+    display: grid;
+    place-items: center;
+    padding-top: 48px;
+    padding-bottom: 72px;
+}
+
+.auth-page .panel {
+    width: min(100%, 500px);
+    margin: 0 auto;
+    padding: clamp(32px, 5vw, 48px);
+    text-align: center;
+}
+
+.auth-page .eyebrow {
+    margin-bottom: 14px;
+}
+
+.auth-page .panel h1 {
+    margin-top: 0;
+    letter-spacing: -0.035em;
+}
+
+.auth-page .panel p {
+    max-width: 390px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.65;
+}
+
+.auth-page .panel .hint {
+    font-size: 13px;
+}
+
+.auth-page .panel .btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 48px;
+    margin-top: 28px;
+}
