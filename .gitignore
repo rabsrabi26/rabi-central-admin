@@ -5,4 +5,3 @@ config.php
 *.sql
 *.zip
 *.log
-error_log
