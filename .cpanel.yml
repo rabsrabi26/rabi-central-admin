@@ -1,0 +1,7 @@
+---
+deployment:
+  tasks:
+    - export DEPLOYPATH=/home/rabsrabico/auth.rabsrabi.com/
+    - /bin/mkdir -p "$DEPLOYPATH"
+    - /bin/cp -R index.php admin.css assets favicon.svg favicon-32.png apple-touch-icon.png "$DEPLOYPATH"
+    - /bin/cp .htaccess "$DEPLOYPATH"
